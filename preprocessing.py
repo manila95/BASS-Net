@@ -7,13 +7,30 @@ import scipy.io as io
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data', type=str, default='Indian_Pines')
+parser.add_argument('--data', type=str, default='Indian_pines')
 parser.add_argument('--patch_size', type=int, default=3)
 opt = parser.parse_args()
 
+if opt.data == "Indian_Pines":
+	opt.url1 = "http://www.ehu.eus/ccwintco/uploads/2/22/Indian_pines.mat"
+	opt.url2 = "http://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat"
+elif opt.data == "Salinas":
+	opt.url1 = "http://www.ehu.eus/ccwintco/uploads/f/f1/Salinas.mat"
+	opt.url2 = "http://www.ehu.eus/ccwintco/uploads/f/fa/Salinas_gt.mat"
+elif opt.data == "PaviaU":
+	opt.url1 = "http://www.ehu.eus/ccwintco/uploads/e/ee/PaviaU.mat"
+	opt.url2 = "http://www.ehu.eus/ccwintco/uploads/5/50/PaviaU_gt.mat"
+
+
 ##loading images for input and target image
-input_mat = io.loadmat('./data/' + opt.data + '.mat')[opt.data.lower()]
-target_mat = io.loadmat('./data/' + opt.data + '_gt.mat')[opt.data.lower() + '_gt']
+try:
+	input_mat = io.loadmat('./data/' + opt.data + '.mat')[opt.data.lower()]
+	target_mat = io.loadmat('./data/' + opt.data + '_gt.mat')[opt.data.lower() + '_gt']
+except:
+	os.system('wget' + ' ./data/' + opt.data + '.mat' + ' ' + opt.url1)
+	os.system('wget' + ' ./data/' + opt.data + '.mat' + ' ' + opt.url2)
+	input_mat = io.loadmat('./data/' + opt.data + '.mat')[opt.data.lower()]
+	target_mat = io.loadmat('./data/' + opt.data + '_gt.mat')[opt.data.lower() + '_gt']	
 PATCH_SIZE = opt.patch_size
 HEIGHT = input_mat.shape[0]
 WIDTH = input_mat.shape[1]
@@ -22,6 +39,18 @@ CLASSES = []
 COUNT = 200 #Number of patches of each class
 OUTPUT_CLASSES = np.max(target_mat)
 print OUTPUT_CLASSES
+
+
+if opt.data == "Indian_Pines":
+	list_labels = [2,3,5,6,8,10,11,12,14]
+	train_idx = [178, 178, 178, 177, 177, 178, 178, 178, 178]
+elif opt.data == "Salinas":
+	list_labels = range(1, OUTPUT_CLASSES+1)
+	train_idx = [175]*OUTPUT_CLASSES
+elif opt.data == "PaviaU":
+	list_labels = range(1, OUTPUT_CLASSES+1)
+	train_idx = [178, 178, 178, 177, 177, 178, 178, 178, 178]
+
 input_mat = input_mat.astype(float)
 input_mat -= np.min(input_mat)
 input_mat /= np.max(input_mat)
@@ -31,7 +60,7 @@ if opt.data == "Indian_Pines":
 elif opt.data == "Salinas":
 	list_labels = range(1, OUTPUT_CLASSES+1)
 	train_idx = [175]*OUTPUT_CLASSES
-elif opt.data == "PaviasU":
+elif opt.data == "PaviaU":
 	list_labels = range(1, OUTPUT_CLASSES+1)
 	train_idx = [178, 178, 178, 177, 177, 178, 178, 178, 178]
 
