@@ -25,7 +25,7 @@ This repository contains code to build and test the Configuration 4 architecture
 		e.g.
 	
 		```
-		sample execution code
+		python preprocessing.py --data Indian_pines --patch_size 3
 		```
 		
 	2. Run ```bass-net_model.lua``` for building the model, training and testing.
@@ -33,6 +33,6 @@ This repository contains code to build and test the Configuration 4 architecture
 		e.g.
 		
 		```
-		sample execution code
+		th bass-net_model.lua --path_dir "./data/" --data Indian_pines --development 1 --optimization "Adam" --learningRate 0.0005 --maxIter 8000 --nbands 10 --patch_size 3 
 		```
 	
