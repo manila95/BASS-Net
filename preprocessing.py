@@ -11,7 +11,7 @@ parser.add_argument('--data', type=str, default='Indian_pines')
 parser.add_argument('--patch_size', type=int, default=3)
 opt = parser.parse_args()
 
-if opt.data == "Indian_Pines":
+if opt.data == "Indian_pines":
 	opt.url1 = "http://www.ehu.eus/ccwintco/uploads/2/22/Indian_pines.mat"
 	opt.url2 = "http://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat"
 elif opt.data == "Salinas":

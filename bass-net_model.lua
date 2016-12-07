@@ -49,7 +49,7 @@ end
 
 -- Loading Data
 
-test_data = matio.load(opt.path_dir ..opt.data .. "_Test_patch_" .. tostring(opt.patch_size) .. ".mat").test_patch
+test_data = matio.load(opt.path_dir .. opt.data .. "_Test_patch_" .. tostring(opt.patch_size) .. ".mat").test_patch
 test_labels = matio.load(opt.path_dir ..opt.data .. "_Test_patch_" .. tostring(opt.patch_size) .. ".mat").test_labels:transpose(1,2)
 opt.channels = test_data:size(2)
 train_data = matio.load(opt.path_dir ..opt.data .. opt.dev .. "_Train_patch_" .. tostring(opt.patch_size) .. ".mat").train_patch:reshape(opt.nclasses*200-nval, opt.channels, opt.patch_size, opt.patch_size)
