@@ -24,13 +24,13 @@ elif opt.data == "PaviaU":
 
 ##loading images for input and target image
 try:
-	input_mat = io.loadmat('./data/' + opt.data + '.mat')[opt.data.lower()]
-	target_mat = io.loadmat('./data/' + opt.data + '_gt.mat')[opt.data.lower() + '_gt']
+	input_mat = io.loadmat('./Data/' + opt.data + '.mat')[opt.data.lower()]
+	target_mat = io.loadmat('./Data/' + opt.data + '_gt.mat')[opt.data.lower() + '_gt']
 except:
-	os.system('wget' + ' ./data/' + opt.data + '.mat' + ' ' + opt.url1)
-	os.system('wget' + ' ./data/' + opt.data + '.mat' + ' ' + opt.url2)
-	input_mat = io.loadmat('./data/' + opt.data + '.mat')[opt.data.lower()]
-	target_mat = io.loadmat('./data/' + opt.data + '_gt.mat')[opt.data.lower() + '_gt']	
+	os.system('wget' + ' ' + opt.url1 + ' -O ./Data/' + opt.data + '.mat')
+	os.system('wget' + ' ' + opt.url2 + ' -O ./Data/' + opt.data + '_gt.mat')
+	input_mat = io.loadmat('./Data/' + opt.data + '.mat')[opt.data.lower()]
+	target_mat = io.loadmat('./Data/' + opt.data + '_gt.mat')[opt.data.lower() + '_gt']	
 PATCH_SIZE = opt.patch_size
 HEIGHT = input_mat.shape[0]
 WIDTH = input_mat.shape[1]
@@ -54,7 +54,7 @@ elif opt.data == "PaviaU":
 input_mat = input_mat.astype(float)
 input_mat -= np.min(input_mat)
 input_mat /= np.max(input_mat)
-if opt.data == "Indian_Pines":
+if opt.data == "Indian_pines":
 	list_labels = [2,3,5,6,8,10,11,12,14]
 	train_idx = [178, 178, 178, 177, 177, 178, 178, 178, 178]
 elif opt.data == "Salinas":
@@ -170,25 +170,25 @@ FULL_TRAIN_LABELS = FULL_TRAIN_LABELS[full_train_idx]
 train = {}
 train["train_patch"] = TRAIN_PATCH
 train["train_labels"] = TRAIN_LABELS
-scipy.io.savemat("./data/" + opt.data + "_Train_patch_" + str(PATCH_SIZE) + ".mat", train)
+scipy.io.savemat("./Data/" + opt.data + "_Train_patch_" + str(PATCH_SIZE) + ".mat", train)
 print TRAIN_PATCH.shape
 
 
 test = {}
 test["test_patch"] = TEST_PATCH
 test["test_labels"] = TEST_LABELS
-scipy.io.savemat("./data/" + opt.data + "_Test_patch_" + str(PATCH_SIZE) + ".mat", test)
+scipy.io.savemat("./Data/" + opt.data + "_Test_patch_" + str(PATCH_SIZE) + ".mat", test)
 print TEST_PATCH.shape
 
 val = {}
 val["val_patch"] = VAL_PATCH
 val["val_labels"] = VAL_LABELS
-scipy.io.savemat("./data/" + opt.data + "_Val_patch_" + str(PATCH_SIZE) + ".mat", val)
+scipy.io.savemat("./Data/" + opt.data + "_Val_patch_" + str(PATCH_SIZE) + ".mat", val)
 print VAL_PATCH.shape
 
 full_train = {}
 full_train["train_patch"] = FULL_TRAIN_PATCH
 full_train["train_labels"] = FULL_TRAIN_LABELS
-scipy.io.savemat("./data/" + opt.data + "_Full_Train_patch_" + str(PATCH_SIZE) + ".mat", full_train)
+scipy.io.savemat("./Data/" + opt.data + "_Full_Train_patch_" + str(PATCH_SIZE) + ".mat", full_train)
 print FULL_TRAIN_LABELS.shape
 
