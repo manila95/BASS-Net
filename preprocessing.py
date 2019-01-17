@@ -38,18 +38,8 @@ BAND = input_mat.shape[2]
 CLASSES = [] 
 COUNT = 200 #Number of patches of each class
 OUTPUT_CLASSES = np.max(target_mat)
-print OUTPUT_CLASSES
+print (OUTPUT_CLASSES)
 
-
-if opt.data == "Indian_Pines":
-	list_labels = [2,3,5,6,8,10,11,12,14]
-	train_idx = [178, 178, 178, 177, 177, 178, 178, 178, 178]
-elif opt.data == "Salinas":
-	list_labels = range(1, OUTPUT_CLASSES+1)
-	train_idx = [175]*OUTPUT_CLASSES
-elif opt.data == "PaviaU":
-	list_labels = range(1, OUTPUT_CLASSES+1)
-	train_idx = [178, 178, 178, 177, 177, 178, 178, 178, 178]
 
 input_mat = input_mat.astype(float)
 input_mat -= np.min(input_mat)
@@ -99,12 +89,12 @@ input_mat = np.transpose(input_mat,(2,0,1))
 print(input_mat.shape)
 for i in range(BAND):
     MEAN_ARRAY[i] = np.mean(input_mat[i,:,:])
-    try:
-        new_input_mat.append(np.pad(input_mat[i,:,:],PATCH_SIZE/2,'constant',constant_values = 0))
-    except:
-        new_input_mat = input_mat
+    #try:
+    new_input_mat.append(np.pad(input_mat[i,:,:],int(PATCH_SIZE/2),'constant',constant_values = 0))
+    #except:
+    #    new_input_mat = input_mat
     
-print np.array(new_input_mat).shape
+print (np.array(new_input_mat).shape)
 
 input_mat = np.array(new_input_mat)
 
@@ -121,7 +111,7 @@ for i in range(HEIGHT):
         if(curr_tar!=0): #Ignore patches with unknown landcover type for the central pixel
             CLASSES[curr_tar-1].append(curr_inp)
             count += 1
-print count
+print (count)
 
 
 TRAIN_PATCH,TRAIN_LABELS,TEST_PATCH,TEST_LABELS,VAL_PATCH, VAL_LABELS = [],[],[],[],[],[]
@@ -151,18 +141,18 @@ VAL_LABELS = np.array(VAL_LABELS)
 FULL_TRAIN_LABELS = np.array(FULL_TRAIN_LABELS)
 FULL_TRAIN_PATCH = np.array(FULL_TRAIN_PATCH)
 
-train_idx = range(len(TRAIN_PATCH))
+train_idx = list(range(len(TRAIN_PATCH)))
 shuffle(train_idx)
 TRAIN_PATCH = TRAIN_PATCH[train_idx]
 TRAIN_LABELS = TRAIN_LABELS[train_idx]
 test_idx = range(len(TEST_PATCH))
 TEST_PATCH = TEST_PATCH[test_idx]
 TEST_LABELS = TEST_LABELS[test_idx]
-val_idx = range(len(VAL_PATCH))
+val_idx = list(range(len(VAL_PATCH)))
 shuffle(val_idx)
 VAL_PATCH = VAL_PATCH[val_idx]
 VAL_LABELS = VAL_LABELS[val_idx]
-full_train_idx = shuffle(range(len(FULL_TRAIN_PATCH)))
+full_train_idx = shuffle(list(range(len(FULL_TRAIN_PATCH))))
 FULL_TRAIN_PATCH = FULL_TRAIN_PATCH[full_train_idx]
 FULL_TRAIN_LABELS = FULL_TRAIN_LABELS[full_train_idx]
 
@@ -171,24 +161,24 @@ train = {}
 train["train_patch"] = TRAIN_PATCH
 train["train_labels"] = TRAIN_LABELS
 scipy.io.savemat("./Data/" + opt.data + "_Train_patch_" + str(PATCH_SIZE) + ".mat", train)
-print TRAIN_PATCH.shape
+print (TRAIN_PATCH.shape)
 
 
 test = {}
 test["test_patch"] = TEST_PATCH
 test["test_labels"] = TEST_LABELS
 scipy.io.savemat("./Data/" + opt.data + "_Test_patch_" + str(PATCH_SIZE) + ".mat", test)
-print TEST_PATCH.shape
+print (TEST_PATCH.shape)
 
 val = {}
 val["val_patch"] = VAL_PATCH
 val["val_labels"] = VAL_LABELS
 scipy.io.savemat("./Data/" + opt.data + "_Val_patch_" + str(PATCH_SIZE) + ".mat", val)
-print VAL_PATCH.shape
+print (VAL_PATCH.shape)
 
 full_train = {}
 full_train["train_patch"] = FULL_TRAIN_PATCH
 full_train["train_labels"] = FULL_TRAIN_LABELS
 scipy.io.savemat("./Data/" + opt.data + "_Full_Train_patch_" + str(PATCH_SIZE) + ".mat", full_train)
-print FULL_TRAIN_LABELS.shape
+print (FULL_TRAIN_LABELS.shape)
 
